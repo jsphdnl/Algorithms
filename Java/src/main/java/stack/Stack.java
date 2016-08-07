@@ -1,12 +1,17 @@
-package main.java.stack;
+package stack;
 
-import java.util.List;
+import doublylinkedlist.DoublyLinkedList;
 
 /**
- * Created by mamu on 8/2/16.
+ * Created by mamu on 8/3/16.
  */
-public class Stack <T> {
-
-
-
+public interface Stack<T> {
+  //push
+  public boolean push(T data);
+  //pop
+  public T pop();
+  //isEmpty
+  public boolean isEmpty();
+  //size
+  public Integer size();
 }

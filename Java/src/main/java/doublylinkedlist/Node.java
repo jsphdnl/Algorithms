@@ -1,4 +1,4 @@
-package main.java.doublylinkedlist;
+package doublylinkedlist;
 
 /**
  * Created by mamu on 8/2/16.

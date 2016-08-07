@@ -1,4 +1,4 @@
-package main.java.doublylinkedlist;
+package doublylinkedlist;
 
 /**
  * Created by mamu on 8/2/16.
@@ -51,68 +51,81 @@ public class DoublyLinkedList<T> {
 
     //set tail
     if (null != tail) {
-     tail.setNext(node);
+      tail.setNext(node);
     }
     //add to tail
     tail = node;
 
-    if(head == null){
-      head = null;
+    if (head == null) {
+      head = node;
     }
     size++;
   }
 
   //remove at head
-  public T removeAtHead(){
+  public T removeAtHead() {
     T data = null;
 
-    if(size == 0 && head == null) {
+    if (size == 0 && head == null) {
+      tail = null;
       return data;
     }
 
-    Node<T> temp = head.getNext();
-    data = head.getData();
+    //Remove at head
+    if (head != null && head.getNext() == null) {
+      data = head.getData();
+      head = null;
+      tail = null;
+    } else {
+      Node<T> temp = head.getNext();
+      data = head.getData();
 
-    head = temp;
-    head.setPrevious(null);
-
+      head = temp;
+      head.setPrevious(null);
+    }
     size--;
     return data;
   }
 
   //remove at tail
-  public T removeAtTail(){
+  public T removeAtTail() {
     T data = null;
 
-    if(size == 0 && tail == null) {
+    if (size == 0 && tail == null) {
+      head = null;
       return data;
     }
 
-    Node<T> temp = tail.getPrevious();
-    data = tail.getData();
-
-    tail = temp;
-    tail.setNext(null);
-    size --;
-
-    return  data;
+    //check if only element
+    if (tail != null && tail.getPrevious() == null) {
+      data = tail.getData();
+      head = null;
+      tail = null;
+    } else {
+      Node<T> temp = tail.getPrevious();
+      data = tail.getData();
+      tail = temp;
+      tail.setNext(null);
+    }
+    size--;
+    return data;
   }
 
   //check if element exits
-  public boolean checkElement(T data){
+  public boolean checkElement(T data) {
 
-    if(null != getData(data)){
+    if (null != getData(data)) {
       return true;
     }
     return false;
   }
 
-  public Node<T> getData(T data){
+  public Node<T> getData(T data) {
 
     Node<T> temp = head;
     Node<T> targetNode = null;
-    while(temp != null) {
-      if(temp.getData().equals(data)){
+    while (temp != null) {
+      if (temp.getData().equals(data)) {
         targetNode = temp;
         break;
       }
@@ -122,5 +135,44 @@ public class DoublyLinkedList<T> {
   }
 
   //remove first occurence of ele
+  public boolean remove(T data) {
+    Node<T> targetNode = getData(data);
+    //check if null
+    if (targetNode == null) {
+      return false;
+    }
+
+    //check if single element
+    if (targetNode.getNext() == null && targetNode.getPrevious() == null) {
+      head = null;
+      tail = null;
+      return true;
+    }
+
+    //check if start of node
+    if (targetNode.getPrevious() == null && targetNode.getNext() != null) {
+      head = head.getNext();
+      head.setPrevious(null);
+      return true;
+    }
+
+    //check if end of node
+    if (targetNode.getPrevious() == null && targetNode.getNext() != null) {
+      tail = tail.getPrevious();
+      head.setNext(null);
+      return true;
+    }
+
+    //middle of node
+    Node<T> temp = targetNode.getNext();
+    temp.setPrevious(targetNode.getPrevious());
+    targetNode.getPrevious().setNext(temp);
+
+    targetNode = null;
+    temp = null;
+
+    size--;
+    return true;
+  }
 
 }
